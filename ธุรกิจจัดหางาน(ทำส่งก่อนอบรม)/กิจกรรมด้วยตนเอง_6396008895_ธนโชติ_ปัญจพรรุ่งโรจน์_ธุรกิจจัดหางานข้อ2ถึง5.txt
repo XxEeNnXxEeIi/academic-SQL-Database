@@ -1,0 +1,277 @@
+วิชา: 96408
+ภาคเรียน: 2/2565
+ผู้ทำ: ธนโชติ ปัญจพรรุ่งโรจน์
+รหัส: 6396008895
+
+กิจกรรม: ธุรกิจจัดหางาน (ส่งก่อนอบรม)
+
+==== กิจกรรม 2 ====
+
+1. แปลง ER-D เป็นตารางข้อมูล (ได้ 7 ตารางตามข้อเสนอแนะ)
+2. ระบุคีย์หลัก และ คีย์นอกในแต่ละโครงสร้างได้
+
+applicant
+(AP_ID(P) , AP_NAME, AP_SEX, AP_ADDRESS, AP_ED, AP_MAJ)
+
+applicant specify
+(AP_ID(P) , QUAL_CODE(P+FK))
+
+apply
+(AP_ID(P) , POS_ID(P+FK), APPLY_DATE)
+
+company
+(COMP_ID(P) , COMP_NAME, COMP_ADDRESS, COMP_PERSON)
+
+position
+(POS_ID(P) , POS_NAME, POS_PERIOD, POS_SALARY, POS_NUMBER, COMP_ID(FK))
+
+position speficy 
+(POS_ID(P) , QUAL_CODE(P+FK))
+
+qualification
+(QUAL_CODE(P) , QUAL_DESC)
+
+==== กิจกรรมที่ 3 ====
+
+2. ทำ Normalization 5 ระดับ
+
+applicant
+(AP_ID(P) , AP_NAME, AP_SEX, AP_ADDR, AP_CHW, AP_ED, AP_MAJ)
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว และ ไม่มีค่าว่าง
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. มีคีย์หลักเพียง 1 เดียว และ ไม่มี FK จึงไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่สามารถแตกย่อยได้อีก และ หากแตกออกแล้ว เมื่อเอามารวมกัน
+จะได้เหมือนเดิมไม่มีเกินมา เช่น
+'AP001', 'นิวยอร์ก'
+'AP001', 'นายA', 'บ้านเลขที่ 1/1'
+'AP001', 'นายA', 'M', 'B.S.', 'CS'
+
+applicant specify
+(AP_ID(P) , QUAL_CODE(P+FK))
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว และ ไม่มีค่าว่าง
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. มีคีย์หลักเพียง 1 เดียว และ มี Attribute เพียง 1 เดียว ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่ไม่สามารถแตกย่อยได้อีก
+
+apply
+(AP_ID(P) , POS_ID(P+FK), APPLY_DATE)
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว และ ไม่มีค่าว่าง
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่สามารถแตกย่อยได้อีก และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 
+เช่น
+'AP001', 'PS001'
+'AP001', 'APPLY_DATE'
+
+company
+(COMP_ID(P) , COMP_NAME, COMP_ADDR, COMP_CHW, COMP_PERSON)
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว และ ไม่มีค่าว่าง
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. มีคีย์หลักเพียง 1 เดียว และ ไม่มี FK จึงไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่สามารถแตกย่อยได้อีก และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 
+เช่น
+'CP001', 'Sigsauer'
+'CP001', ''สำนักงานใหญ่ 1/1'
+'CP001', 'นิวยอร์ก'
+'CP001', 'นายA'
+
+position
+(POS_ID(P) , POS_NAME, POS_PERIOD, POS_SALARY, POS_NUMBER, COMP_ID(FK))
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว และ ไม่มีค่าว่าง
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่สามารถแตกย่อยได้อีก และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 
+
+position speficy 
+(POS_ID(P) , QUAL_CODE(P+FK))
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว และ ไม่มีค่าว่าง
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. มีคีย์หลักเพียง 1 เดียว และ มี Attribute เพียง 1 เดียว ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่ไม่สามารถแตกย่อยได้อีก
+
+qualification
+(QUAL_CODE(P) , QUAL_DESC)
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว และ ไม่มีค่าว่าง
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. มีคีย์หลักเพียง 1 เดียว และ มี Attribute เพียง 1 เดียว ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่ไม่สามารถแตกย่อยได้อีก
+
+==== กิจกรรมที่ 4 ====
+
+1. สร้างตาราง
+
+CREATE TABLE applicant
+(
+	AP_ID varchar(255) NOT NULL PRIMARY KEY,
+	AP_NAME varchar(255) NOT NULL,
+	AP_ADDR varchar(255) NOT NULL,
+	AP_CHW varchar(255) NOT NULL,
+	AP_SEX char(1) NOT NULL, 
+	AP_ED varchar(255) NOT NULL,
+	AP_MAJ varchar(255) NOT NULL
+);
+
+CREATE TABLE applicant specify
+(
+	AP_ID varchar(255) NOT NULL REFERENCE applicant (AP_ID),
+	QUAL_CODE varchar(255) NOT NULL REFERENCE qualification (QUAL_CODE),
+	PRIMARY KEY (AP_ID, QUAL_CODE)
+);
+
+CREATE TABLE apply 
+(
+	AP_ID varchar(255) NOT NULL REFERENCE applicant (AP_ID),
+	POS_ID varchar(255) NOT NULL REFERENCE position (POS_ID),
+	APPLY_DATE DATE NOT NULL,
+	PRIMARY KEY (AP_ID, POS_ID)
+);
+
+CREATE TABLE company
+(
+	COMP_ID smallint(255) NOT NULL PRIMARY KEY,
+	COMP_NAME varchar(255) NOT NULL PRIMARY KEY,
+	COMP_ADDR varchar(255) NOT NULL,
+	COMP_CHW varchar(255) NOT NULL,
+	COMP_PERSON(30) Char NOT NULL
+);
+
+CREATE TABLE position 
+(
+	POS_ID varchar(255) NOT NULL PRIMARY KEY,
+	POS_NAME varchar(255) NOT NULL,
+	POS_PERIOD varchar(255) NOT NULL,
+	POS_SALARY smallint(255) NOT NULL,
+	POS_NUMBER smallint(255) NOT NULL
+	COMP_ID smallint(255) NOT NULL REFERENCE company (COMP_ID)
+);
+
+CREATE TABLE position specify
+(
+	POS_ID varchar(255) NOT NULL REFERENCE position (POS_ID),
+	QUAL_CODE varchar(255) NOT NULL REFERENCE qualification (QUAL_CODE),
+	PRIMARY KEY (POS_ID, QUAL_CODE)
+);
+
+CREATE TABLE qualification
+(
+	QUAL_CODE varchar(255) NOT NULL PRIMARY KEY,
+	QUAL_DESC varchar(255) NOT NULL
+);
+
+=== === === === === === 
+
+2. ใช้คำสั่งภาษา SQL ปรับปรุงโครงสร้างตาราง
+
+2.1 เพิ่มคอลัมน์
+ALTER TABLE company
+ADD COMP_PHONE Char(10);
+
+2.2 เปลี่ยนประเภทข้อมูลในคอลัมน์
+ALTER COLUMN COMP_PHONE Interger(10);
+
+2.3 ลบคอลัมน์ออกจากตาราง
+ALTER TABLE company
+DROP COLUMN COMP_PHONE;
+
+2.4 เปลี่ยนขนาดข้อมูลในคอลัมน์
+ALTER TABLE company
+ALTER COLUMN COMP_NAME Char(20);
+
+3. เพิ่มข้อมูลในแต่ละตารางอย่างน้อย 3 แถว
+
+INSERT INTO applicant
+VALUES('AP001', 'นายA', 'บ้านเลขที่ 1/1', 'นิวยอร์ก', 'M', 'B.S.', 'CS')
+VALUES('AP002', 'นายB', 'บ้านเลขที่ 1/2', 'มอสโก', 'M', 'M.S.', 'CS')
+VALUES('AP003', 'นายC', 'บ้านเลขที่ 1/3', 'ปักกิ่ง', 'M', 'D.S.', 'CS')
+
+INSERT INTO applicant specify
+VALUES('AP001', 'ASP')
+VALUES('AP002', 'C++')
+VALUES('AP003', 'DB2')
+
+INSERT INTO apply
+VALUES('AP001', 'PS001', '20-4-2566')
+VALUES('AP002', 'PS001', '20-4-2566')
+VALUES('AP003', 'PS001', '20-4-2566')
+
+INSERT INTO company
+VALUES('CP001', 'ValveSteam', 'สำนักงานใหญ่ A 1/1', 'นิวยอร์ก', 'นาง Z')
+VALUES('CP002', 'EpicGameStore', 'สำนักงานใหญ่ B 1/2', 'ลอสแอนเจลิส', 'นาง Y')
+VALUES('CP003', 'RockstarSocialClub', 'สำนักงานใหญ่ C 1/3', 'วอชิงตันดีซี', 'นาง X')
+
+INSERT INTO position 
+VALUES('PS001', 'พนักงานต้อนรับ', '1 ปี', '15,000', '1', 'CP001')
+VALUES('PS002', 'ซ้อมปริ้นเตอร์', '2 ปี', '20,000', '2', 'CP002')
+VALUES('PS003', 'โปรแกรมเมอร์', '3 ปี', '25,000', '3', 'CP003')
+
+INSERT INTO position specify
+VALUES('PS001', 'ASP)
+VALUES('PS002', 'C++')
+VALUES('PS003', 'DB2')
+
+INSERT INTO qualification
+VALUES('ASP', 'WEB_ASP')
+VALUES('C++', 'C++')
+VALUES('DB2', 'Database Adminstrator, DB2')
+
+4.
+DROP TABLE company;
+
+==== กิจกรรมที่ 5 ====
+
+1. ลบข้อมูลของเลขรหัส
+DELETE FROM qualification
+WHERE QUAL_CODE = 'C++';
+
+2. ปรับปรุงข้อมูลชื่อผู้ติดต่อ
+UPDATE company
+SET COMP_PERSON = 'นายบุญมี สุขมาก'
+WHERE COMP_PERSON = 'BetaSoft'
+
+3. ปรับปรุงจำนวนอัตราว่างที่เปิดรับ
+UPDATE position
+SET POS_NUMBER = '4'
+WHERE POS_NAME = 'ICT Manager'
+
+4. แสดงข้อมูลทั้งหมดของบริษัท
+SELECT * 
+FROM company
+GROUP BY (COMP_ID) DESC;
+
+5. แสดงข้อมูลผู้สมัครงานแบบมีเงื่อนไข
+SELECT AP_NAME, AP_SEX, AP_MAJ
+FROM applicant2
+WHERE (AP_NAME LIKE 'A%') OR (AP_NAME LIKE 'Y%');
+
+6. แสดงค่าเงินเดือน ฯลฯ แบบมีเงื่อนไข
+SELECT MAX(POS_SALARY) AS MaxPay, MIN(POS_SALARY) AS MinPay,
+AVG(POS_SALARY) AS AvgPay, COUNT(*) AS CountPay
+FROM position;
+
+7. แสดงชื่อจังหวัดแบบมีเงื่อนไข
+SELECT DISTINCT AP_CHW
+FROM applicant
+WHERE AP_SEX = 'M';
+
+8. แสดงเลขรหัสตำแหน่งแบบมีเงื่อนไข
+SELECT POS_NAME, POS_SALARY, POS_PERIOD
+FROM position
+WHERE POS_PERIOD BETWEEN 1 AND 3 ,POS_SALARY > 20000;
+
+9. แสดงวิชาเอก และ ผู้สมัครในแต่ละวิชาเอก
+SELECT AP_MAJ, COUNT(*) AS COUNT_TOTAL
+FROM applicant
+GROUP BY AP_MAJ
+HAVING COUNT(*) >= 1;
+
+10. ให้แสดงข้อมูลแบบมีเงื่อนไข
+SELECT position.POS_NAME, company.COMP_NAME
+FROM position, company
+WHERE position.POS_ID = company.COMP_ID

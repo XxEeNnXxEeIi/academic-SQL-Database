@@ -1,0 +1,340 @@
+วิชา: 96408
+ภาคเรียน: 2/2565
+กิจกรรม: ธุรกิจเช่าเที่ยวบิน
+ผู้ทำ: ธนโชติ ปัญจพรรุ่งโรจน์
+รหัส: 6396008895
+
+==== กิจกรรม 2: แปลง ER Diagram เป็นตารางข้อมูล ====
+
+chapter (ตอนเช่า)
+(CHAR_NUM(P), CHAR_DATE, CHAR_DESTINATION, CHAR_DISTANCE, CHAR_HOURS_WAIT, CHAR_FUEL, CUS_CODE(FK), AC_NUM(FK), PIL_NUM(FK), CO_PIL_NUM(FK))
+
+customer (ลูกค้า)
+(CUS_CODE(P), CUS_FNAME, CUS_LNAME, CUS_BALANCE, CUS_PHONE, CUS_AREACODE)					
+
+aircraft (เครื่องบิน)
+(AC_NUM(P), AC_TTAF, AC_TTEL, AC_TTER, MOD_CODE(FK))
+
+model (โมเดลเครื่องบิน)
+(MOD_CODE(P), MOD_NAME, MOD_SEATS, MOD_MANUFACTURER, MOD_CHG_MILE)
+
+pilot (นักบิน)
+(PIL_NUM(P), PIL_LICENSE, PIL_RATINGS, PIL_SKILL_DATE, PIL_MEDTYPE, PIL_MED_DATE, EMP_NUM(FK))
+
+employee (พนักงาน)
+(EMP_NUM(P), EMP_TITLE, EMP_FNAME, EMP_LNAME, EMP_ADDRESS, EMP_DOB, EMP_HIRE_DATE)
+
+==== กิจกรรม 3: ทำ Normalization 5 ระดับ ====
+
+chapter (ตอนเช่า)
+(CHAR_NUM(P), CHAR_DATE, CHAR_DESTINATION, CHAR_DISTANCE, CHAR_HOURS_WAIT, CHAR_FUEL, CUS_CODE(FK), AC_NUM(FK), PIL_NUM(FK), CO_PIL_NUM(FK))
+
+1NF
+- ค้นพบ FK ที่ควรจะเป็น P จึงแก้ไข จะได้
+(CHAR_NUM(P), CUS_CODE(P+FK), AC_NUM(P+FK), PIL_NUM(P+FK), CHAR_DATE, CHAR_DESTINATION, CHAR_DISTANCE, CHAR_HOURS_WAIT, CHAR_FUEL, CO_PIL_NUM(FK))
+
+2NF
+- ไม่พบการขึ้นต่อกันแบบ Partial * ผ่าน
+
+3NF
+- พบ A กับ A ที่มีการขึ้นต่อกันแบบ Transitive ได้แก่
+
+จุดหมายปลางทางที่บินไป จะสามารถระบุระยะทาง และ น้ำมันที่จะใช้ได้ (บินตรง)
+CHAR_DESTINATION -> CHAR_DISTANCE, CHAR_FUEL
+
+จึงสร้างตารางใหม่
+ตาราง 1
+(CHAR_NUM(P), CUS_CODE(P+FK), AC_NUM(P+FK), PIL_NUM(P+FK), CHAR_DATE, CHAR_DESTINATION, CHAR_HOURS_WAIT, CO_PIL_NUM(FK))
+ตาราง 2
+(CHAR_DESTINATION, CHAR_DISTANCE, CHAR_FUEL)
+
+BCNF
+- ไม่พบคีย์คู่แข่ง * ผ่าน
+
+4NF
+- ไม่พบ MVD * ผ่าน
+
+5NF * ยอมแพ้แล้วครับ
+
+สรุป
+
+chapter
+(CHAR_NUM(P), CUS_CODE(P+FK), AC_NUM(P+FK), PIL_NUM(P+FK), CHAR_DATE, CHAR_DESTINATION, CHAR_HOURS_WAIT, CO_PIL_NUM(FK))
+
+chapter destination
+(CHAR_DESTINATION, CHAR_DISTANCE, CHAR_FUEL)
+
+customer (ลูกค้า)
+(CUS_CODE(P), CUS_FNAME, CUS_LNAME, CUS_BALANCE, CUS_PHONE, CUS_AREACODE)				
+1NF: มีค่าเดียว, ไม่มีกลุ่มซ้ำ * ผ่าน
+2NF: ไม่มี Partial * ผ่าน
+3NF: ไม่มี Transitive * ผ่าน	
+BCNF: มีคีย์หลักอันเดียว * ผ่าน
+4NF: ไม่มี MVD * ผ่าน
+5NF: ยอมแพ้ครับ
+
+aircraft (เครื่องบิน)
+(AC_NUM(P), AC_TTAF, AC_TTEL, AC_TTER, MOD_CODE(FK))
+1NF: มีค่าเดียว, ไม่มีกลุ่มซ้ำ * ผ่าน
+2NF: ไม่มี Partial * ผ่าน
+3NF: ไม่มี Transitive * ผ่าน	
+BCNF: มีคีย์หลักอันเดียว * ผ่าน
+4NF: ไม่มี MVD * ผ่าน
+5NF: ยอมแพ้ครับ
+
+model (โมเดลเครื่องบิน)
+(MOD_CODE(P), MOD_NAME, MOD_SEATS, MOD_MANUFACTURER, MOD_CHG_MILE)
+1NF: มีค่าเดียว, ไม่มีกลุ่มซ้ำ * ผ่าน
+2NF: ไม่มี Partial * ผ่าน
+3NF: ไม่มี Transitive * ผ่าน	
+BCNF: มีคีย์หลักอันเดียว * ผ่าน
+4NF: ไม่มี MVD * ผ่าน
+5NF: ยอมแพ้ครับ
+
+pilot (นักบิน)
+(PIL_NUM(P), PIL_LICENSE, PIL_RATINGS, PIL_SKILL_DATE, PIL_MEDTYPE, PIL_MED_DATE, EMP_NUM(FK))
+1NF: มีค่าเดียว, ไม่มีกลุ่มซ้ำ * ผ่าน
+2NF: ไม่มี Partial * ผ่าน
+3NF: ไม่มี Transitive * ผ่าน	
+BCNF: มีคีย์หลักอันเดียว * ผ่าน
+4NF: ไม่มี MVD * ผ่าน
+5NF: ยอมแพ้ครับ
+
+employee (พนักงาน)
+(EMP_NUM(P), EMP_TITLE, EMP_FNAME, EMP_LNAME, EMP_ADDRESS, EMP_DOB, EMP_HIRE_DATE)
+1NF: มีค่าเดียว, ไม่มีกลุ่มซ้ำ * ผ่าน
+2NF: ไม่มี Partial * ผ่าน
+3NF: ไม่มี Transitive * ผ่าน	
+BCNF: มีคีย์หลักอันเดียว * ผ่าน
+4NF: ไม่มี MVD * ผ่าน
+5NF: ยอมแพ้ครับ
+
+==== กิจกรรม 3: อันเก่า ====
+
+chapter
+(CHAR_NUM(P), CHAR_DATE, CHAR_DESTINATION, CHAR_DISTANCE, CHAR_HOURS_WAIT, CHAR_FUEL, CUS_CODE(FK), AC_NUM(FK), PIL_NUM(FK), CO_PIL_NUM(FK))
+ทดลองเพิ่มข้อมูล
+CH001, CUS001, AC001, PIL001
+CH002, CUS001, AC001, PIL001
+CH003, CUS001, AC001, PIL001
+CH004, CUS001, AC001, PIL001
+CH005, CUS001, AC001, PIL001
+
+1. มีกลุ่มข้อมูลซ้ำเนื่องจากในลูกค้า 1 คนสามารถมีได้หลาย chapter และ chapter เองก็มีได้หลาย pilot และ pilot เองสามารถมีได้หลาย chapter
+จึงไม่อยู่เงื่อนไข 1NF จึงต้องแยกออก จะได้เป็น
+
+chapter
+(CHAR_NUM(P), CHAR_DATE, CHAR_DESTINATION, CHAR_DISTANCE, CHAR_HOURS_WAIT, CHAR_FUEL)
+
+chapter customer
+(CHAR_NUM(P), CUS_CODE(FK))
+
+chapter aircraft
+(CHAR_NUM(P), AC_NUM(FK))
+
+chapter pilot
+(CHAR_NUM(P), PIL_NUM(FK), CO_PIL_NUM(FK))
+
+* สรุป: หลังจากทำการแยกออกแล้ว ทำให้ตารางทั้งหมดอยู่ในคุณสมบัติ 5NF แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว 
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation มีทั้งที่แตกย่อยได้ และ แตกย่อยไม่ได้อีก และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 	
+
+customer 
+(CUS_CODE(P), CUS_FNAME, CUS_LNAME, CUS_BALANCE, CUS_PHONE, CUS_AREACODE)
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว 
+2. ไม่มีกลุ่มข้อมูลซ้ำ 
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd) 
+4. เป็น Relation ที่แตกย่อยได้ และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 	
+
+aircraft 
+(AC_NUM(P), AC_TTAF, AC_TTEL, AC_TTER, MOD_CODE(FK))
+ทดลองเพิ่มข้อมูล
+AC001, M001
+AC002, M001
+AC003, M001
+AC004, M001
+
+1. มีกลุ่มข้อมูลซ้ำเนื่องจากใน 1 model สามารถมีเครื่องบินได้หลายลำ จึงเกิดกลุ่มข้อมูลซ้ำ
+จึงไม่อยู่เงื่อนไข 1NF จึงต้องแยกออก จะได้เป็น
+
+aircraft 
+(AC_NUM(P), AC_TTAF, AC_TTEL, AC_TTER)
+
+aircraft model
+(AC_NUM(P), MOD_CODE(FK))
+
+* สรุป: หลังจากทำการแยกออกแล้ว ทำให้ตารางทั้งหมดอยู่ในคุณสมบัติ 5NF แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว 
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation มีทั้งที่แตกย่อยได้ และ แตกย่อยไม่ได้อีก และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 	
+
+model 
+(MOD_CODE(P), MOD_NAME, MOD_SEATS, MOD_MANUFACTURER, MOD_CHG_MILE)
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว 
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่แตกย่อยได้ และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 	
+
+pilot 
+(PIL_NUM(P), PIL_LICENSE, PIL_RATINGS, PIL_SKILL_DATE, PIL_MEDTYPE, PIL_MED_DATE, EMP_NUM(FK))
+ทดลองการเพิ่มข้อมูล
+PIL001, EMP001
+PIL002, EMP002
+PIL003, EMP003
+
+1. กำหนดให้นักบินทุกคนต้องเป็นพนักงาน แต่พนักงานไม่ได้มีแค่นักบิน จึงไม่เกิดกลุ่มข้อมูลซ้ำ 
+2. มีการขึ้นต่อการแบบเชิงกลุ่ม (MVD) เกิดขึ้น เพราะ EMP_NUM สามารถระบุ PIL_NUM ได้ และ ทั้งสอง สามารถระบุ Attribute อื่นๆ ได้
+จึงต้องทำการแยกตาราง จะได้เป็น
+
+pilot 
+(PIL_NUM(P), PIL_LICENSE, PIL_RATINGS, PIL_MED_TYPE, PIL_MED_DATE, PIL_SKILL_DATE)
+
+pilot employee
+(PIL_NUM(P), EMP_NUM(FK))
+
+* สรุป: หลังจากทำการแยกออกแล้ว ทำให้ตารางทั้งหมดอยู่ในคุณสมบัติ 5NF แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว 
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation มีทั้งที่แตกย่อยได้ และ แตกย่อยไม่ได้อีก และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 		
+	
+employee 
+(EMP_NUM(P), EMP_TITLE, EMP_FNAME, EMP_LNAME, EMP_ADDRESS, EMP_DOB, EMP_HIRE_DATE)
+ตารางนี้มีคุณสมบัติอยู่ในระดับ 5 แล้ว เนื่องจาก...
+1. ทุกๆ Attribute มีเพียงค่าเดียว 
+2. ไม่มีกลุ่มข้อมูลซ้ำ
+3. ไม่มีการขึ้นต่อกันไม่ว่าจะแบบใด (partial, transitive, mvd)
+4. เป็น Relation ที่แตกย่อยได้ และ หากแตกออกแล้ว เมื่อเอามารวมกัน จะได้เหมือนเดิมไม่มีเกินมา 
+
+=== สรุปตารางที่ได้จากการทำ Normalization ===
+
+* แยกออกได้เป็น 11 ตาราง
+
+chapter
+(CHAR_NUM(P), CHAR_DATE, CHAR_DESTINATION, CHAR_DISTANCE, CHAR_HOURS_WAIT, CHAR_FUEL)
+
+chapter customer
+(CHAR_NUM(P), CUS_CODE(FK))
+
+chapter aircraft
+(CHAR_NUM(P), AC_NUM(FK))
+
+chapter pilot
+(CHAR_NUM(P), PIL_NUM(FK), CO_PIL_NUM)
+
+customer 
+(CUS_CODE(P), CUS_FNAME, CUS_LNAME, CUS_BALANCE, CUS_PHONE, CUS_AREACODE)
+
+aircraft 
+(AC_NUM(P), AC_TTAF, AC_TTEL, AC_TTER)
+
+aircraft model
+(AC_NUM(P), MOD_CODE(FK))
+
+model 
+(MOD_CODE(P), MOD_NAME, MOD_SEATS, MOD_MANUFACTURER, MOD_CHG_MILE)
+
+pilot 
+(PIL_NUM(P), PIL_LICENSE, PIL_RATINGS, PIL_MED_TYPE, PIL_MED_DATE, PIL_SKILL_DATE)
+
+pilot employee
+(PIL_NUM(P), EMP_NUM(FK))
+
+employee 
+(EMP_NUM(P), EMP_TITLE, EMP_FNAME, EMP_LNAME, EMP_ADDRESS, EMP_DOB, EMP_HIRE_DATE)
+
+==== กิจกรรม 4: สร้างตารางโดยใช้ SQL ====
+
+CREATE TABLE chapter
+(
+	CHAR_NUM smallint(255) NOT NULL PRIMARY KEY,
+	CHAR_DATE date NOT NULL,
+	CHAR_ DESTINATION char(3) NOT NULL,
+	CHAR_DISTANCE smallint(255) NOT NULL,
+	CHAR_HOURS_WAIT smallint(255) NOT NULL,
+	CHAR_FUEL smallint(255) NOT NULL
+);
+
+CREATE TABLE customer
+(
+	CUS_CODE smallint(255) NOT NULL PRIMARY KEY,
+	CUS_FNAME varchar(255) NOT NULL,
+	CUS_LNAME varchar(255) NOT NULL,
+	CUS_AREACODE smallint(255) NOT NULL,
+	CUS_PHONE smallint(255) NOT NULL,
+	CUS_BALANCE smallint(255) NOT NULL
+);
+
+CREATE TABLE aircraft
+(
+	AC_NUM smallint(255) NOT NULL PRIMARY KEY,
+	AC_TTAF smallint(255) NOT NULL,
+	AC_TTEL smallint(255) NOT NULL,
+	AC_TTER smallint(255) NOT NULL
+);
+
+CREATE TABLE model
+(
+	MOS_CODE smallint(255) NOT NULL PRIMARY KEY,
+	MOD_NAME varchar(255) NOT NULL,
+	MOD_SEAT smallint(255) NOT NULL,
+	MOD_MANUFACTURER varchar(255) NOT NULL,
+	MOD_CHG_MILE smallint(255) NOT NULL,
+);
+
+CREATE TABLE pilot
+(
+	PIL_NUM smallint(255) NOT NULL PRIMARY KEY,
+	PIL_LICENSE smallint(255) NOT NULL,
+	PIL_RATINGS smallint(255) NOT NULL,
+	PIL_MED_TYPE varchar(255) NOT NULL,
+	PIL_MED_DATE date NOT NULL,
+	PIL_SKILL_DATE date NOT NULL
+);
+
+CREATE TABLE employee
+(
+	EMP_NUM smallint(255) NOT NULL PRIMARY KEY,
+	EMP_TITLE smallint(255) NOT NULL,
+	EMP_FNAME smallint(255) NOT NULL,
+	EMP_LNAME varchar(255) NOT NULL,
+	EMP_ADDRESS varchar(255) NOT NULL,
+	EMP_DOB date NOT NULL,
+	EMP_HIRE_DATE date NOT NULL
+);
+
+CREATE TABLE chapter customer
+(
+	CHAR_NUM smallint(255) NOT NULL PRIMARY KEY REFERENCE chapter (CHAR_NUM),
+	CUS_CODE smallint(255) NOT NULL REFERENCE customer (CUS_CODE)
+);
+
+CREATE TABLE chapter aircraft
+(
+	CHAR_NUM smallint(255) NOT NULL PRIMARY KEY REFERENCE chapter (CHAR_NUM),
+	AC_NUM smallint(255) NOT NULL REFERENCE aircraft (AC_NUM)
+);
+
+CREATE TABLE chapter pilot
+(
+	CHAR_NUM smallint(255) NOT NULL PRIMARY KEY REFERENCE chapter (CHAR_NUM),
+	PIL_NUM smallint(255) NOT NULL REFERENCE pilot (PIL_NUM), 
+	CO_PIL_NUM smallint(255) REFERENCE pilot (PIL_NUM)
+);
+
+CREATE TABLE aircraft model
+(
+	AC_NUM smallint(255) NOT NULL PRIMARY KEY REFERENCE aircraft (AC_NUM),
+	MOD_CODE smallint(255) NOT NULL REFERENCE model (MOD_CODE)
+);
+
+CREATE TABLE pilot employee
+(
+	PIL_NUM smallint(255) NOT NULL PRIMARY KEY REFERENCE pilot (PIL_NUM),
+	EMP_NUM smallint(255) NOT NULL REFERENCE employee (EMP_NUM)
+);
